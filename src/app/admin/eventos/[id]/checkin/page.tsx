@@ -80,7 +80,7 @@ export default function LiveCheckinPage() {
   }, [eventId]);
 
   // Procesar Check-in o Verificación
-  const processCheckIn = async (queryParam: { query?: string; ticketCode?: string; registrationId?: string; action?: "verify" | "confirm" }) => {
+  const processCheckIn = async (queryParam: { query?: string; ticketCode?: string; registrationId?: string; action?: "verify" | "confirm" | "checkout" }) => {
     setSearching(true);
     setScanResult(null);
 

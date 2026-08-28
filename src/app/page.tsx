@@ -39,7 +39,7 @@ export default async function HomePage() {
             <CheckCircle2 className="w-4 h-4" /> Plataforma Oficial de Registro & Control de Acceso
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight font-display text-navy">
-            DÍAS EAFIT 2026 REGISTRO ANTICIPADO
+            DÍAS EAFIT 2026 <br /> REGISTRO ANTICIPADO
           </h1>
           <p className="mt-5 text-lg sm:text-xl text-slateblue max-w-2xl mx-auto font-light leading-relaxed">
             Inscríbete de manera rápida, obtén tu boleto con código QR para ingreso exprés y asegura tu cupo en los próximos eventos.

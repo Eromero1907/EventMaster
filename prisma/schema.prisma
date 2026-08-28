@@ -1,0 +1,95 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN") // SUPERADMIN, ADMIN
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Event {
+  id            String         @id @default(uuid())
+  title         String
+  slug          String         @unique
+  description   String?
+  location      String?
+  startDate     DateTime
+  endDate       DateTime?
+  maxCapacity   Int            @default(100)
+  isPublished   Boolean        @default(true)
+  hasShifts     Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  fields        EventField[]
+  shifts        Shift[]
+  registrations Registration[]
+}
+
+model EventField {
+  id          String   @id @default(uuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  fieldKey    String   // unique identifier within event, e.g. "semestre", "talla_camiseta"
+  label       String   // e.g. "Semestre académico"
+  fieldType   String   // "text", "number", "select", "radio", "checkbox", "tel", "email"
+  optionsJson String?  // JSON string e.g. '["1° Semestre", "2° Semestre", ...]'
+  dependsOn   String?  // fieldKey of the boolean field it depends on (shows only if parent is true)
+  isRequired  Boolean  @default(false)
+  orderIndex  Int      @default(0)
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Shift {
+  id          String   @id @default(uuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name        String   // e.g. "Turno 1: 08:00 - 10:00"
+  startTime   DateTime? // Optional start time for the shift
+  endTime     DateTime?
+  registrations Registration[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Registration {
+  id                String    @id @default(uuid())
+  eventId           String
+  event             Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  shiftId           String?
+  shift             Shift?    @relation(fields: [shiftId], references: [id], onDelete: SetNull)
+  ticketCode        String    @unique // e.g. "TICK-A9X2B4"
+  fullName          String
+  email             String
+  nationalId        String    // Cédula / Documento de identidad
+  epikId            String?   // ID de Epik
+  phone             String?   // Celular
+  eps               String?   // EPS
+  bloodType         String?   // Grupo Sanguíneo (A+, O+, etc.)
+  belongsToGroup    Boolean   @default(false)
+  groupName         String?   // Nombre del grupo en caso de pertenecer
+  checkedIn         Boolean   @default(false)
+  checkedInAt       DateTime?
+  isManualEntry     Boolean   @default(false) // Si fue registrado manualmente en puerta
+  customAnswersJson String    @default("{}") // Almacena respuestas a preguntas dinámicas en formato JSON
+  isCancelled       Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([eventId])
+  @@index([email])
+  @@index([nationalId])
+  @@index([ticketCode])
+}

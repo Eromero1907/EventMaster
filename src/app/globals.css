@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Dalek Pinpoint";
+  src: url("https://db.onlinewebfonts.com/t/b6967de302b2a1bd3e834e8e0f26e484.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  /* UI/UX Pro Max Official Identity Variables */
+  --color-cream: #ECE2CE;
+  --color-sand: #E8D6C2;
+  --color-navy: #0C1634;
+  --color-steel: #40658A;
+  --color-slateblue: #1A2545;
+  --color-powder: #8CBCD0;
+  --color-terra: #A43320;
+  --color-sienna: #984A39;
+  --color-gold: #E3A41A;
+  --color-ochre: #B89343;
+}
+
+body {
+  color: var(--color-navy);
+  background-color: var(--color-cream);
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sand);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-steel);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background: white !important;
+  }
+}

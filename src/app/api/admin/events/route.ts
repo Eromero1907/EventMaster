@@ -146,11 +146,23 @@ export async function POST(req: NextRequest) {
         isPublished: isPublished ?? true,
         hasShifts: Boolean(hasShifts),
         shifts: {
-          create: Boolean(hasShifts) && Array.isArray(shifts) ? shifts.map((s: any) => ({
-            name: s.name,
-            startTime: s.startTime ? new Date(s.startTime) : null,
-            endTime: s.endTime ? new Date(s.endTime) : null,
-          })) : [],
+          create: Boolean(hasShifts) && Array.isArray(shifts) ? shifts.map((s: any) => {
+            let parsedStart = null;
+            let parsedEnd = null;
+            if (s.startTime) {
+              const parts = s.startTime.split(":");
+              parsedStart = new Date(`1970-01-01T${parts[0]}:${parts[1]}:00Z`);
+            }
+            if (s.endTime) {
+              const parts = s.endTime.split(":");
+              parsedEnd = new Date(`1970-01-01T${parts[0]}:${parts[1]}:00Z`);
+            }
+            return {
+              name: s.name,
+              startTime: parsedStart,
+              endTime: parsedEnd,
+            };
+          }) : [],
         },
         fields: {
           create: allFields,

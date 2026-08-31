@@ -256,7 +256,7 @@ export default function EventRegistrationPage() {
       <div key={field.id} className={field.fieldType === "boolean" || field.fieldKey === "fullName" ? "sm:col-span-2" : "sm:col-span-1"}>
         <label className="block text-xs font-semibold text-slate-700 mb-1.5">
           {field.label} {field.isRequired && <span className="text-red-500">*</span>}
-          {field.fieldKey === "epikId" && <span className="text-steel font-normal ml-1">(opcional)</span>}
+          
         </label>
         {renderInput()}
         {field.fieldKey === "email" && <span className="text-[10px] text-steel mt-1 block">Aquí llegará tu boleto con código QR</span>}

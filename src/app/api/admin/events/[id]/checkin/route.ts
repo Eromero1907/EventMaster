@@ -100,7 +100,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       registration: updated,
       message: alreadyCheckedIn
         ? `⚠️ ATENCIÓN: Esta persona ya había ingresado el ${new Intl.DateTimeFormat("es-CO", { dateStyle: "short", timeStyle: "medium" }).format(new Date(previousCheckInTime!))}`
-        : `✅ Entrada confirmada exitosamente para ${registration.fullName}`,
+        : `Entrada confirmada exitosamente para ${registration.fullName}`,
     });
   } catch (error: any) {
     console.error("Error in checkin:", error);

@@ -288,12 +288,12 @@ export default function LiveCheckinPage() {
           <div
             className={`p-5 rounded-3xl border shadow-xl flex items-start gap-4 transition-all animate-fadeIn ${
               scanResult.status === "success"
-                ? "bg-sand border-emerald-500/50 text-emerald-100"
+                ? "bg-emerald-50 border-emerald-500 text-emerald-800"
                 : scanResult.status === "warning"
-                ? "bg-amber-950/80 border-amber-500/50 text-amber-100"
+                ? "bg-amber-50 border-amber-500 text-amber-900"
                 : scanResult.status === "verify"
-                ? "bg-sky-950/80 border-terra/50 text-sky-100"
-                : "bg-red-950/80 border-red-500/50 text-red-100"
+                ? "bg-sky-50 border-sky-500 text-sky-900"
+                : "bg-red-50 border-red-500 text-red-900"
             }`}
           >
             {scanResult.status === "success" && (
@@ -313,7 +313,7 @@ export default function LiveCheckinPage() {
               <h3 className="font-extrabold text-base tracking-tight">{scanResult.message}</h3>
 
               {scanResult.registration && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-white/10 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-navy/10 text-xs">
                   <div>
                     <span className="text-steel block text-[10px]">Nombre:</span>
                     <strong className="text-navy">{scanResult.registration.fullName}</strong>
@@ -327,7 +327,7 @@ export default function LiveCheckinPage() {
                     <strong className="font-mono text-sienna">{scanResult.registration.ticketCode}</strong>
                   </div>
                   <div>
-                    <span className="text-steel block text-[10px]">Grupo / Colectivo:</span>
+                    <span className="text-steel block text-[10px]">Grupo Estudiantil:</span>
                     <strong className="text-navy">
                       {scanResult.registration.belongsToGroup
                         ? scanResult.registration.groupName || "Sí"

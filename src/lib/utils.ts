@@ -29,6 +29,7 @@ export function formatDate(date: Date | string | null | undefined): string {
   if (!date) return "";
   const d = new Date(date);
   return new Intl.DateTimeFormat("es-CO", {
+    timeZone: "America/Bogota",
     weekday: "short",
     day: "numeric",
     month: "short",

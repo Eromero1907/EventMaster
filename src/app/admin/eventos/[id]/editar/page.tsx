@@ -43,10 +43,14 @@ export default function EditEventPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [startDate: startDate ? new Date(startDate).toISOString() : "", setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [maxCapacity, setMaxCapacity] = useState(100);
-  const [isPublished, setIsPublished] = useState(true);
+  const [isPublished,
+        hasShifts,
+        shifts: hasShifts ? shifts : [], setIsPublished] = useState(true);
+  const [hasShifts, setHasShifts] = useState(false);
+  const [shifts, setShifts] = useState<any[]>([]);
 
   // Fields State
   const [fields, setFields] = useState<FieldItem[]>([]);
@@ -62,10 +66,21 @@ export default function EditEventPage() {
         setTitle(data.title);
         setDescription(data.description || "");
         setLocation(data.location || "");
-        setStartDate(data.startDate ? new Date(data.startDate).toISOString().slice(0, 16) : "");
-        setEndDate(data.endDate ? new Date(data.endDate).toISOString().slice(0, 16) : "");
+        const startD = data.startDate ? new Date(data.startDate) : null;
+        setStartDate(startD ? new Date(startD.getTime() - startD.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : "");
+        const endD = data.endDate ? new Date(data.endDate) : null;
+        setEndDate(endD ? new Date(endD.getTime() - endD.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : "");
         setMaxCapacity(data.maxCapacity);
         setIsPublished(data.isPublished);
+        setHasShifts(data.hasShifts || false);
+        setShifts(
+          data.shifts?.map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            startTime: s.startTime ? new Date(new Date(s.startTime).getTime() - new Date(s.startTime).getTimezoneOffset() * 60000).toISOString().slice(11, 16) : "",
+            endTime: s.endTime ? new Date(new Date(s.endTime).getTime() - new Date(s.endTime).getTimezoneOffset() * 60000).toISOString().slice(11, 16) : "",
+          })) || []
+        );
 
         // Formatear campos
         const formattedFields = (data.fields || []).map((f: any) => ({
@@ -83,6 +98,16 @@ export default function EditEventPage() {
       loadEvent();
     }
   }, [eventId]);
+
+  const addShift = () => {
+    setShifts([...shifts, { id: "temp_" + Date.now(), name: "", startTime: "", endTime: "" }]);
+  };
+  const removeShift = (id: string) => {
+    setShifts(shifts.filter((s) => s.id !== id));
+  };
+  const updateShift = (id: string, field: string, value: string) => {
+    setShifts(shifts.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
+  };
 
   const addCustomField = () => {
     const newField: FieldItem = {
@@ -132,7 +157,7 @@ export default function EditEventPage() {
         description,
         location,
         startDate,
-        endDate: endDate || null,
+        endDate: endDate ? new Date(endDate).toISOString() : null,
         maxCapacity,
         isPublished,
         fields: fields.map((f) => ({
@@ -221,7 +246,7 @@ export default function EditEventPage() {
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -233,7 +258,7 @@ export default function EditEventPage() {
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -246,7 +271,7 @@ export default function EditEventPage() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
@@ -260,7 +285,7 @@ export default function EditEventPage() {
                     required
                     value={maxCapacity}
                     onChange={(e) => setMaxCapacity(parseInt(e.target.value, 10) || 1)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
@@ -275,7 +300,7 @@ export default function EditEventPage() {
                     required
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
@@ -287,7 +312,7 @@ export default function EditEventPage() {
                     type="datetime-local"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>

@@ -15,6 +15,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         fields: {
           orderBy: { orderIndex: "asc" },
         },
+        shifts: {
+          orderBy: { startTime: "asc" },
+        },
         _count: {
           select: { registrations: { where: { isCancelled: false } } },
         },
@@ -54,7 +57,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
   try {
     const body = await req.json();
-    const { title, description, location, startDate, endDate, maxCapacity, isPublished, fields } = body;
+    const { title, description, location, startDate, endDate, maxCapacity, isPublished, fields, hasShifts, shifts } = body;
 
     // Actualizar datos del evento
     const updated = await prisma.event.update({
@@ -67,8 +70,39 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         endDate: endDate ? new Date(endDate) : null,
         maxCapacity: maxCapacity !== undefined ? parseInt(maxCapacity, 10) : undefined,
         isPublished: isPublished !== undefined ? isPublished : undefined,
+        hasShifts: hasShifts !== undefined ? Boolean(hasShifts) : undefined,
       },
     });
+
+
+    // Actualizar turnos
+    if (hasShifts !== undefined) {
+      await prisma.shift.deleteMany({
+        where: { eventId: params.id },
+      });
+      if (hasShifts && Array.isArray(shifts) && shifts.length > 0) {
+        await prisma.shift.createMany({
+          data: shifts.map((s: any) => {
+            let parsedStart = null;
+            let parsedEnd = null;
+            if (s.startTime) {
+              const parts = s.startTime.split(":");
+              parsedStart = new Date(`1970-01-01T${parts[0]}:${parts[1]}:00Z`);
+            }
+            if (s.endTime) {
+              const parts = s.endTime.split(":");
+              parsedEnd = new Date(`1970-01-01T${parts[0]}:${parts[1]}:00Z`);
+            }
+            return {
+              eventId: params.id,
+              name: s.name,
+              startTime: parsedStart,
+              endTime: parsedEnd,
+            };
+          }),
+        });
+      }
+    }
 
     // Si se enviaron campos/preguntas para actualizar o añadir
     if (Array.isArray(fields)) {

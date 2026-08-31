@@ -17,6 +17,8 @@ export async function POST(req: NextRequest, { params }: { params: { slug: strin
       belongsToGroup,
       groupName,
       customAnswers,
+      hasAllergies,
+      allergiesDetails,
       shiftId,
     } = body;
 
@@ -94,7 +96,7 @@ export async function POST(req: NextRequest, { params }: { params: { slug: strin
         belongsToGroup: Boolean(belongsToGroup),
         groupName: groupName ? groupName.trim() : null,
         isManualEntry: false,
-        customAnswersJson: customAnswers ? JSON.stringify(customAnswers) : "{}",
+        customAnswersJson: JSON.stringify({ ...(customAnswers || {}), hasAllergies, allergiesDetails }),
       },
     });
 

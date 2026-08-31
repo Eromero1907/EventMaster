@@ -22,6 +22,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       belongsToGroup,
       groupName,
       customAnswers,
+      hasAllergies,
+      allergiesDetails,
       shiftId,
     } = body;
 
@@ -61,7 +63,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         checkedIn: true, // Manual door registration is immediately checked-in
         checkedInAt: new Date(),
         isManualEntry: true,
-        customAnswersJson: customAnswers ? JSON.stringify(customAnswers) : "{}",
+        customAnswersJson: JSON.stringify({ ...(customAnswers || {}), hasAllergies, allergiesDetails }),
       },
     });
 

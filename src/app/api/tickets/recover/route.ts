@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
       where: {
         nationalId: nationalId.trim(),
         email: email.trim().toLowerCase(),
+        isCancelled: false,
       },
       include: {
         event: {

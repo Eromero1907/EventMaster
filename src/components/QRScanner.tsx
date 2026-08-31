@@ -34,6 +34,7 @@ export default function QRScanner({ onScanSuccess, onScanError }: QRScannerProps
       gainNode.connect(audioCtx.destination);
       
       oscillator.start();
+      if (navigator.vibrate) navigator.vibrate(100); // Vibración de 100ms
       oscillator.stop(audioCtx.currentTime + 0.1);
     } catch (e) {
       console.log("Audio no soportado");

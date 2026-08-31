@@ -43,12 +43,10 @@ export default function EditEventPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [startDate: startDate ? new Date(startDate).toISOString() : "", setStartDate] = useState("");
+  const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [maxCapacity, setMaxCapacity] = useState(100);
-  const [isPublished,
-        hasShifts,
-        shifts: hasShifts ? shifts : [], setIsPublished] = useState(true);
+  const [isPublished, setIsPublished] = useState(true);
   const [hasShifts, setHasShifts] = useState(false);
   const [shifts, setShifts] = useState<any[]>([]);
 
@@ -156,10 +154,12 @@ export default function EditEventPage() {
         title,
         description,
         location,
-        startDate,
+        startDate: startDate ? new Date(startDate).toISOString() : "",
         endDate: endDate ? new Date(endDate).toISOString() : null,
         maxCapacity,
         isPublished,
+        hasShifts,
+        shifts: hasShifts ? shifts : [],
         fields: fields.map((f) => ({
           fieldKey: f.fieldKey || f.label.toLowerCase().replace(/[^a-z0-9]/g, "_"),
           label: f.label,
@@ -246,7 +246,7 @@ export default function EditEventPage() {
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -258,7 +258,7 @@ export default function EditEventPage() {
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -271,7 +271,7 @@ export default function EditEventPage() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
@@ -285,7 +285,7 @@ export default function EditEventPage() {
                     required
                     value={maxCapacity}
                     onChange={(e) => setMaxCapacity(parseInt(e.target.value, 10) || 1)}
-                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
@@ -300,7 +300,7 @@ export default function EditEventPage() {
                     required
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
@@ -312,7 +312,7 @@ export default function EditEventPage() {
                     type="datetime-local"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>

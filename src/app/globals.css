@@ -56,3 +56,10 @@ body {
     background: white !important;
   }
 }
+
+/* Fix for mobile Safari datetime inputs overflowing */
+input[type="datetime-local"],
+input[type="date"],
+input[type="time"] {
+  max-width: 100% !important;
+}

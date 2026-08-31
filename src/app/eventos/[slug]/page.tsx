@@ -37,7 +37,21 @@ interface EventData {
   registrationsByShift?: Record<string, number>;
 }
 
-const formatShiftTime = (iso: string | null | undefined) => { if (!iso) return "--:--"; try { return new Date(iso).toISOString().substring(11, 16); } catch (e) { return "--:--"; } };
+const formatShiftTime = (iso: string | null | undefined) => {
+  if (!iso) return "--:--";
+  try {
+    const d = new Date(iso);
+    let hours = d.getUTCHours();
+    const minutes = d.getUTCMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const hoursStr = hours.toString().padStart(2, "0");
+    return `${hoursStr}:${minutes} ${ampm}`;
+  } catch (e) {
+    return "--:--";
+  }
+};
 
 export default function EventRegistrationPage() {
   const params = useParams();

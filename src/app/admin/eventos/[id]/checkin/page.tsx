@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const formatShiftTime = (iso: string | null | undefined) => { if (!iso) return "--:--"; try { return new Date(iso).toISOString().substring(11, 16); } catch (e) { return "--:--"; } };
+
 export default function LiveCheckinPage() {
   const params = useParams();
   const eventId = params.id as string;
@@ -487,7 +489,7 @@ export default function LiveCheckinPage() {
                     <option value="">-- Elige un turno --</option>
                     {event.shifts?.map((shift: any) => (
                       <option key={shift.id} value={shift.id}>
-                        {shift.name} {shift.startTime ? `(${shift.startTime})` : ''}
+                        {shift.name} {shift.startTime ? `(${formatShiftTime(shift.startTime)})` : ""}
                       </option>
                     ))}
                   </select>

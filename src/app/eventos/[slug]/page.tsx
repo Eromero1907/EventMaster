@@ -37,6 +37,8 @@ interface EventData {
   registrationsByShift?: Record<string, number>;
 }
 
+const formatShiftTime = (iso: string | null | undefined) => { if (!iso) return "--:--"; try { return new Date(iso).toISOString().substring(11, 16); } catch (e) { return "--:--"; } };
+
 export default function EventRegistrationPage() {
   const params = useParams();
   const router = useRouter();
@@ -387,7 +389,7 @@ export default function EventRegistrationPage() {
                               <span className="block text-sm font-bold text-navy">{shift.name}</span>
                               {(shift.startTime || shift.endTime) && (
                                 <span className="block text-xs text-slate-500 mt-1">
-                                  {shift.startTime || '--:--'} - {shift.endTime || '--:--'}
+                                  {formatShiftTime(shift.startTime)} - {formatShiftTime(shift.endTime)}
                                 </span>
                               )}
                             </div>

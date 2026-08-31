@@ -223,7 +223,7 @@ export default function CreateEventPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Congreso Anual de Innovación y Tecnología 2026"
-                  className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -236,7 +236,7 @@ export default function CreateEventPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Explica de qué trata el evento, requisitos de vestimenta o agenda general..."
-                  className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -250,7 +250,7 @@ export default function CreateEventPage() {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Ej. Auditorio Principal - Bloque B"
-                    className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
@@ -264,14 +264,14 @@ export default function CreateEventPage() {
                     required
                     value={maxCapacity}
                     onChange={(e) => setMaxCapacity(parseInt(e.target.value, 10) || 1)}
-                    className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                   <span className="text-[10px] text-steel mt-1 block">El formulario se cerrará automáticamente al llegar a este número</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
+                <div className="min-w-0 w-full">
                   <label className="block text-xs font-semibold text-slateblue mb-1.5">
                     Fecha y Hora de Inicio <span className="text-red-400">*</span>
                   </label>
@@ -280,11 +280,11 @@ export default function CreateEventPage() {
                     required
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
-                <div>
+                <div className="min-w-0 w-full">
                   <label className="block text-xs font-semibold text-slateblue mb-1.5">
                     Fecha y Hora de Fin (Opcional)
                   </label>
@@ -292,7 +292,7 @@ export default function CreateEventPage() {
                     type="datetime-local"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-[calc(100vw-4rem)] sm:w-full px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full min-w-0 max-w-[100%] overflow-hidden px-4 py-2.5 rounded-xl bg-white border border-sand text-navy text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>

@@ -291,7 +291,7 @@ export default function EditEventPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
+                <div className="min-w-0 w-full">
                   <label className="block text-xs font-semibold text-slateblue mb-1.5">
                     Fecha y Hora Inicio <span className="text-red-400">*</span>
                   </label>
@@ -304,7 +304,7 @@ export default function EditEventPage() {
                   />
                 </div>
 
-                <div>
+                <div className="min-w-0 w-full">
                   <label className="block text-xs font-semibold text-slateblue mb-1.5">
                     Fecha y Hora Fin (Opcional)
                   </label>

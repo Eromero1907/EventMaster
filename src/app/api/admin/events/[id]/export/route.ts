@@ -42,6 +42,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       "Grupo Sanguíneo",
       "Pertenece a Grupo",
       "Nombre del Grupo",
+      "Sufre Morbilidades/Alergias",
+      "Detalle Alergias",
       "Tipo de Registro",
       "Fecha de Registro",
       ...customFields.map((f) => `"${f.label.replace(/"/g, '""')}"`),
@@ -88,6 +90,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         escapeCsv(reg.bloodType || "N/A"),
         reg.belongsToGroup ? '"SÍ"' : '"NO"',
         escapeCsv(reg.groupName || "N/A"),
+        customAnswers.hasAllergies ? '"SÍ"' : '"NO"',
+        escapeCsv(customAnswers.allergiesDetails || "N/A"),
         reg.isManualEntry ? '"Manual en puerta"' : '"Anticipado en línea"',
         escapeCsv(
           new Intl.DateTimeFormat("es-CO", {

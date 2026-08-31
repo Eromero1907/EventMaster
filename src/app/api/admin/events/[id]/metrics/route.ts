@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // Time series (Registrations by day) and Group Data
     const registrations = await prisma.registration.findMany({
       where: { eventId: params.id, isCancelled: false },
-      select: { createdAt: true, belongsToGroup: true, groupName: true },
+      select: { createdAt: true, belongsToGroup: true, groupName: true, checkedIn: true },
       orderBy: { createdAt: 'asc' }
     });
 
@@ -38,14 +38,16 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       const dateStr = r.createdAt.toISOString().split('T')[0];
       datesMap[dateStr] = (datesMap[dateStr] || 0) + 1;
 
-      // Group counting
-      if (r.belongsToGroup) {
-        belongsToGroupCount++;
-        if (r.groupName) {
-          groupNameMap[r.groupName] = (groupNameMap[r.groupName] || 0) + 1;
+      // Group counting (Only for actual attendees currently checked in)
+      if (r.checkedIn) {
+        if (r.belongsToGroup) {
+          belongsToGroupCount++;
+          if (r.groupName) {
+            groupNameMap[r.groupName] = (groupNameMap[r.groupName] || 0) + 1;
+          }
+        } else {
+          noGroupCount++;
         }
-      } else {
-        noGroupCount++;
       }
     });
 

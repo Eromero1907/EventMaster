@@ -7,6 +7,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   if (!session) {
     return new NextResponse("No autorizado", { status: 401 });
   }
+  if (session.role === "STAFF") {
+    return new NextResponse("Acceso denegado. Tu rol de STAFF no permite descargar reportes.", { status: 403 });
+  }
 
   try {
     const event = await prisma.event.findUnique({

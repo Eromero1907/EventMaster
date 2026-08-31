@@ -60,6 +60,9 @@ export async function POST(req: NextRequest) {
   if (!session) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
+  if (session.role === "STAFF") {
+    return NextResponse.json({ error: "Acceso denegado. Tu rol de STAFF no permite esta acción." }, { status: 403 });
+  }
 
   try {
     const body = await req.json();

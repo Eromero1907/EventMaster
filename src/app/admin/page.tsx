@@ -20,6 +20,8 @@ import {
   Clock,
   MapPin,
   Trash2,
+  Eye,
+  EyeOff,
   BarChart3
 } from "lucide-react";
 import Link from "next/link";
@@ -81,6 +83,25 @@ export default function AdminDashboardPage() {
     navigator.clipboard.writeText(url);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  
+  const handleTogglePublish = async (id: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isPublished: !currentStatus }),
+      });
+      if (res.ok) {
+        setEvents(events.map(e => e.id === id ? { ...e, isPublished: !currentStatus } : e));
+      } else {
+        alert("Error al cambiar la visibilidad del evento.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de red.");
+    }
   };
 
   const handleDeleteEvent = async (id: string, title: string) => {
@@ -231,7 +252,7 @@ export default function AdminDashboardPage() {
                           </span>
                         ) : (
                           <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-sand text-steel">
-                            Borrador
+                            Oculto / Pausado
                           </span>
                         )}
                       </div>
@@ -354,6 +375,17 @@ export default function AdminDashboardPage() {
                         </Link>
                         {admin?.role !== "STAFF" && (
                           <>
+                            <button
+                              onClick={() => handleTogglePublish(event.id, event.isPublished)}
+                              className={`text-xs p-1.5 rounded-lg transition-colors border ${
+                                event.isPublished 
+                                  ? "text-navy hover:text-terra bg-white border-sand" 
+                                  : "text-steel hover:text-navy bg-sand border-slate-300"
+                              }`}
+                              title={event.isPublished ? "Ocultar evento" : "Publicar evento"}
+                            >
+                              {event.isPublished ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                            </button>
                             <Link
                               href={`/admin/eventos/${event.id}/editar`}
                               className="text-xs text-navy hover:text-terra bg-white border border-sand p-1.5 rounded-lg transition-colors"

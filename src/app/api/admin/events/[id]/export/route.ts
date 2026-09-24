@@ -20,6 +20,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         },
         registrations: {
           orderBy: [{ checkedIn: "desc" }, { createdAt: "asc" }],
+          include: { shift: true },
         },
       },
     });
@@ -47,6 +48,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       "Nombre del Grupo",
       "Sufre Morbilidades/Alergias",
       "Detalle Alergias",
+      ...(event.hasShifts ? ["Turno"] : []),
       "Tipo de Registro",
       "Fecha de Registro",
       ...customFields.map((f) => `"${f.label.replace(/"/g, '""')}"`),
@@ -95,6 +97,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         escapeCsv(reg.groupName || "N/A"),
         customAnswers.hasAllergies ? '"SÍ"' : '"NO"',
         escapeCsv(customAnswers.allergiesDetails || "N/A"),
+        ...(event.hasShifts ? [escapeCsv(reg.shift?.name || "N/A")] : []),
         reg.isManualEntry ? '"Manual en puerta"' : '"Anticipado en línea"',
         escapeCsv(
           new Intl.DateTimeFormat("es-CO", {

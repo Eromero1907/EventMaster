@@ -12,7 +12,9 @@ async function getPublishedEvents() {
       where: { isPublished: true },
       include: {
         _count: {
-          select: { registrations: true },
+          select: { registrations: { where: { isCancelled: false } } },
+        },
+        shifts: true,
         },
       },
       orderBy: { startDate: "asc" },
@@ -77,7 +79,8 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => {
               const registered = event._count.registrations;
-              const capacity = event.maxCapacity;
+              const shiftCount = event.shifts?.length || 0;
+              const capacity = event.hasShifts && shiftCount > 0 ? event.maxCapacity * shiftCount : event.maxCapacity;
               const remaining = Math.max(0, capacity - registered);
               const percentFull = Math.min(100, Math.round((registered / capacity) * 100));
               const isFull = remaining <= 0;

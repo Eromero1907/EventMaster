@@ -29,7 +29,9 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
       return acc;
     }, {});
 
-    const remainingSpots = Math.max(0, event.maxCapacity - totalRegistrations);
+    const shiftCount = event.shifts?.length || 0;
+    const effectiveCapacity = event.hasShifts && shiftCount > 0 ? event.maxCapacity * shiftCount : event.maxCapacity;
+    const remainingSpots = Math.max(0, effectiveCapacity - totalRegistrations);
     const isSoldOut = event.hasShifts 
       ? false // if has shifts, we calculate sold out per shift on frontend
       : remainingSpots <= 0;
